@@ -6,7 +6,8 @@ export const Parallax
 
 Parallax.start 
     = ({
-        viewportHeight
+        viewportHeight,
+        scrollY = 0
     }) => {
         if (viewportHeight === undefined) {
             throw new Error('Viewport Height must be set');
@@ -17,7 +18,8 @@ Parallax.start
         }
 
         return new Container({
-            viewportHeight
+            viewportHeight,
+            scrollY
         });
     }
 
@@ -26,6 +28,10 @@ Parallax.addSection
         
         if (height === undefined) {
             throw new Error('Height must be provided');
+        }
+
+        if (container instanceof Container === false) {
+            throw new Error('Should be an instance of a container');
         }
 
         let clone = new Container(container);
@@ -37,11 +43,20 @@ Parallax.addSection
             offset: clone.sections.length === 0 ? 0 : lastSection.offset
         }
         
-        if (height < clone.viewportHeight) {
+        if (clone.sections.length !== 0 && height < clone.viewportHeight) {
             thisSection.offset = clone.viewportHeight - height;
         }
 
         clone.sections = [...clone.sections, thisSection];
+
+        return clone;
+    }
+
+Parallax.changeScrollPosition
+    = (state, newScrollPosition) => {
+        let clone = new Container(state);
+
+        clone.scrollY = newScrollPosition;
 
         return clone;
     }

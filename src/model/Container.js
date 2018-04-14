@@ -2,9 +2,11 @@ export class Container
 {
     constructor({
         sections = [],
-        viewportHeight
+        viewportHeight,
+        scrollY
     } = {}) {
         this.viewportHeight = viewportHeight;
         this.sections = sections;
+        this.scrollY = scrollY;
     }
 }
